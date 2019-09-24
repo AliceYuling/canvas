@@ -38,17 +38,6 @@ canvas.onmouseup = function(e) {
 };
 
 function drawPath(x, y) {
-  /*
-  const radius = 2;
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-  ctx.fillStyle = '#ff0000';
-  ctx.fill();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = '#ff0000';
-  ctx.stroke();
-  */
-  // ctx.moveTo(prevX, prevY);
   ctx.lineTo(x, y);
   ctx.stroke();
   prevX = x;
@@ -58,8 +47,6 @@ function drawPath(x, y) {
 function loadImage() {
   img = new Image();
   img.onload = function() {
-    // canvas.width = img.width;
-    // canvas.height = img.height;
     isImgLoaded = true;
     drawImage();
   };
