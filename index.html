@@ -2,17 +2,22 @@
 <head>
   <title></title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./index.css">
 </head>
 
 <body style="margin: 0;">
   <div id="container" style="position: relative">
     <canvas id="oriCanvas" width="1000" height="1000" style="position: relative; left:0; top:0;"></canvas>
     <canvas id="maskCanvas" width="1000" height="1000" style="position: absolute;left:0;top:0;z-index:99;"></canvas>
-    <div class="toolbar">
-      <button id="eraser">擦除</button>
-      <button id="pen">绘制</button>
-      <button id="gen">生成</button>
+    <div id="toolbar">
+      <div id="circle" class="icon-wrapper toolbar-item"><img src="./assets/circle.svg" width="20" height="20" /></div>
+      <div id="rect" class="icon-wrapper toolbar-item"><img src="./assets/rect.svg" width="20" height="20" /></div>
+      <button id="eraser" class="toolbar-item">擦除</button>
+      <button id="pen" class="toolbar-item">绘制</button>
     </div>
+    <div class="gen-btn-wrapper">
+      <button id="gen" class="toolbar-item">生成</button>
+    </div> 
   </div>
 
   <script src="./index.js"></script>
