@@ -3,6 +3,7 @@ var stage;
 
 var container = document.getElementById('container');
 var eraser = document.getElementById('eraser');
+var gen = document.getElementById('gen');
 
 var layer = new Konva.Layer();
 
@@ -70,7 +71,24 @@ eraser.addEventListener('click', function(e) {
   });
   tr1 && tr1.destroy();
   layer.batchDraw();
-})
+});
+
+gen.addEventListener('click', function(e) {
+  tr1 && tr1.destroy();
+  let nodes = stage.find('.settled');
+  nodes.each(function(node) {
+    node.fill('white');
+  });
+  nodes = stage.find('#current');
+  nodes.each(function(node) {
+    node.fill('white');
+  });
+  var img = stage.toDataURL();
+  var imageWrapper = document.getElementById('image-wrapper');
+  var imgEl = document.createElement('img');
+  imgEl.src = img;
+  imageWrapper.append(imgEl);
+});
 
 function drawImage() {
   var imageObj = new Image();
@@ -98,23 +116,26 @@ function drawImage() {
 function addMouseEvents() {
   stage.on('mousedown touchstart', function(e) {
     let pos = stage.getPointerPosition();
+    startPos = pos;
     if (!tools[selectedTool].isDrawing) {
+      let node = null;
+      if (stage.find('#current').length) {     
+        node = stage.find('#current')[0];
+      }
       if (tools[selectedTool].isTransform && selectedTool !== 'pen') {
-        let node = null;
-        if (stage.find('#current').length) {
-          node = stage.find('#current')[0];
-          if (tr1.isTransforming() || node.intersects(pos)) {
-            // 在刚完成绘制的图形内部按下并移动鼠标，不会开始新的绘制，而是拖动图形
-            return;
-          } else {
-            // 否则开始新的绘制，并清除scaling
-            startDrawing(pos);
-          }
+        if (tr1.isTransforming() || (node && node.intersects(pos))) {
+          // 在刚完成绘制的图形内部按下并移动鼠标，不会开始新的绘制，而是拖动图形
+          return;
+        } else {
+          // 否则开始新的绘制，并清除scaling
+          if (node) node.setAttr('draggable', false);
+          startDrawing(pos);
         }
       }
       // 新绘制
       // 可能选择了另一图形工具，此时需要将上一次的Transformer清除，并重置current node
       else {
+        if (node) node.setAttr('draggable', false);
         startDrawing(pos);
       }
     }
@@ -123,6 +144,7 @@ function addMouseEvents() {
   stage.on('mousemove touchmove', function(e) {
     if (!tools[selectedTool].isDrawing) return;
     let curPos = stage.getPointerPosition();
+    if (curPos.x === startPos.x && curPos.y === startPos.y) return; // 阻止按下鼠标不拖动时的mousemove事件
     switch(selectedTool) {
       case 'pen':
         freeDraw(curPos.x, curPos.y);
@@ -142,15 +164,14 @@ function addMouseEvents() {
 
   stage.on('mouseup touchend', function() {
     if (tools[selectedTool].isDrawing) {
-      tools[selectedTool].isTransform = true;
       tools[selectedTool].isDrawing = false;
       if (selectedTool === 'pen') {
         lastLine.setAttr('closed', true);
         layer.batchDraw();
-        tools[selectedTool].isTransform = false;
       }
       let node = stage.find('#current')[0];
       if (node) {
+        tools[selectedTool].isTransform = true;
         tr1 = new Konva.Transformer({
           node,
           centeredScaling: true,
@@ -182,7 +203,6 @@ function startDrawing(pos) {
   }
   tools[selectedTool].isDrawing = true;
   tools[selectedTool].isTransform = false;
-  startPos = pos;
 }
 
 function freeDraw(curX, curY) {
