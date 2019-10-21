@@ -2,16 +2,21 @@
 <head>
   <title></title>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="./index.css">
 </head>
 
 <body style="margin: 0;">
   <div id="container">
   </div>
-  <div class="toolbar">
-    <button id="eraser">擦除</button>
-    <button id="pen">绘制</button>
-    <button id="gen">生成</button>
+  <div id="toolbar">
+    <div id="rect" class="icon-wrapper toolbar-item"><img src="./assets/rect.svg" width="20" height="20" /></div>
+    <div id="ellipse" class="icon-wrapper toolbar-item"><img src="./assets/ellipse.svg" width="20" height="20" /></div>
+    <button id="eraser" class="toolbar-item">清空</button>
+    <button id="pen" class="toolbar-item">绘制</button>
   </div>
+  <div class="gen-btn-wrapper">
+    <button id="gen" class="toolbar-item">生成</button>
+  </div> 
   <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
   <script src="./index.js"></script>
 </body>

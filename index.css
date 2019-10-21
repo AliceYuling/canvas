@@ -1,0 +1,30 @@
+#container {
+  width: 1000px;
+  /* margin-top: 12px;
+  margin-left: 12px; */
+}
+
+#toolbar {
+  display: flex;
+  width: 400px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.icon-wrapper {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  border: 1px solid #999;
+  display: table-cell;
+  text-align: center;
+}
+
+.toolbar-item:not(:first-child) {
+  margin-left: 5px;
+}
+
+.gen-btn-wrapper {
+  margin-top: 6px;
+}
